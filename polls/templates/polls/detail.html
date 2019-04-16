@@ -12,7 +12,7 @@
   <div class="container pt-5">
     <h1>{{ poll.title }}</h1>
     <br>
-    <form action="">
+    <form method="get" action="{% url 'detail' poll.id %}">
       {% for question in poll.question_set.all %}
       <div class="row pb-5">
         <div class="col-md-12 border border-dark">
@@ -20,10 +20,10 @@
           <ul>
             {% for choice in question.choice_set.all %}
             <li>
-              <input class="form-check-input" type="radio" name="gridRadios" id="{{ choice.question_id }}"
-                value="{{ choice.value }}">
+              <input class="form-check-input" type="radio" name="choice{{ question.id }}"
+                value="{{ choice.id }}" {% if choice.answer %}checked="checked"{% endif %}>
               <label class="form-check-label" for="gridRadios2">
-                {{ choice.text }}
+                {{ choice.text }} - {{ choice.answer }}
               </label>
             </li>
             {% endfor %}
@@ -33,8 +33,8 @@
       {% endfor %}
       <div class="row pb-5">
         <div class="col-md-12">
-          <button type="submit" class="btn btn-primary my-1">Submit</button>
-          <button type="submit" class="btn btn-primary my-1 bg-danger border-danger">Cancle</button>
+          <button type="submit" class="btn btn-primary my-1" value="SAVE">Submit</button>
+          <button type="button" class="btn btn-primary my-1 bg-danger border-danger" value="CANCEL" onclick="window.location = {% url 'index' %}">Cancel</button>
         </div>
       </div>
     </form>
