@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+  <link rel="stylesheet" href="{% static 'polls/css/bootstrap.css' %}">
+  <meta charset="UTF-8">
+  <title>Details Pages</title>
+</head>
+
+<body>
+  <div class="container pt-5">
+    <h1>{{ poll.title }}</h1>
+    <br>
+    <form action="">
+      {% for question in poll.question_set.all %}
+      <div class="row pb-5">
+        <div class="col-md-12 border border-dark">
+          <h2>{{ question.text }}</h2>
+          <ul>
+            {% for choice in question.choice_set.all %}
+            <li>
+              <input class="form-check-input" type="radio" name="gridRadios" id="{{ choice.question_id }}"
+                value="{{ choice.value }}">
+              <label class="form-check-label" for="gridRadios2">
+                {{ choice.text }}
+              </label>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      {% endfor %}
+      <div class="row pb-5">
+        <div class="col-md-12">
+          <button type="submit" class="btn btn-primary my-1">Submit</button>
+          <button type="submit" class="btn btn-primary my-1 bg-danger border-danger">Cancle</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+  <script src="{% static 'polls/js/vue.js' %}"></script>
+  <script>
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{% static 'polls/css/bootstrap.css' %}">
+    <meta charset="UTF-8">
+    <title>My poll page</title>
+</head>
+<body>
+  <div class="container py-5">
+    <h1 class="pb-3">{{ poll_head }}</h1>
+    <div class="row">
+      <div class="col-md-12 border border-dark">
+        <h2 class="py-3">Poll List</h2>
+        <ul>
+          {% for poll in poll_list %}
+            <li>{{ poll.id }}. {{ poll.title }} ({{ poll.question_count }}) - <a href="{% url 'detail' poll_id=poll.id %}">detail</a> </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
