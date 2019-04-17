@@ -12,7 +12,8 @@
   <div class="container pt-5">
     <h1>{{ poll.title }}</h1>
     <br>
-    <form method="get" action="{% url 'detail' poll.id %}">
+    <form method="POST" action="{% url 'detail' poll.id %}">
+     {% csrf_token %}
       {% for question in poll.question_set.all %}
       <div class="row pb-5">
         <div class="col-md-12 border border-dark">
@@ -33,8 +34,9 @@
       {% endfor %}
       <div class="row pb-5">
         <div class="col-md-12">
+            <a href="{% url 'create_comment' %}">เพิ่ม Comment</a>
           <button type="submit" class="btn btn-primary my-1" value="SAVE">Submit</button>
-          <button type="button" class="btn btn-primary my-1 bg-danger border-danger" value="CANCEL" onclick="window.location = {% url 'index' %}">Cancel</button>
+          <a class="btn btn-primary my-1 bg-danger border-danger" value="CANCEL" href="{% url 'index' %}" >Cancel</a><a href=""></a>
         </div>
       </div>
     </form>

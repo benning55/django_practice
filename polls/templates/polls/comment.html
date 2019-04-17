@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'polls/css/bootstrap.css' %}">
+</head>
+<body>
+    <div class="container pt-5">
+        <h1>{{ comment_head }}</h1>
+        <form method="post" action="{% url 'create_comment' %}">
+        {% csrf_token %}
+            {% if form.non_field_errors %}
+          <p>
+          {{ form.non_field_errors }}
+          </p>
+      {% endif %}
+        <label id="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+        <div>{{ form.title }}</div>
+        <label id="{{ form.body.id_for_label }}">{{ form.body.label }}</label>
+        <div>{{ form.body }}</div>
+        <label id="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+        <div>{{ form.email.errors }}{{ form.email }}</div>
+        <label id="{{ form.tel.id_for_label }}">MobileNumber</label>
+        <div>{{ form.tel.errors }}{{ form.tel }}</div>
+        <br>
+        <input type="submit" value="Save">
+    </form>
+    </div>
+
+</body>
+</html>

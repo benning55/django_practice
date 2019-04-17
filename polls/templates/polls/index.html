@@ -14,11 +14,22 @@
         <h2 class="py-3">Poll List</h2>
         <ul>
           {% for poll in poll_list %}
-            <li>{{ poll.id }}. {{ poll.title }} ({{ poll.question_count }}) - <a href="{% url 'detail' poll_id=poll.id %}">detail</a> </li>
+            <li>{{ poll.id }}. {{ poll.title }} ({{ poll.question_count }}) - {% if user.is_authenticated %}<a href="{% url 'detail' poll_id=poll.id %}">detail</a>{% endif %} </li>
           {% endfor %}
         </ul>
       </div>
     </div>
   </div>
+  {% if user.is_authenticated %}
+    <p>
+        <a href="{% url 'logout' %}">LOGOUT</a>
+    </p>
+   {% endif %}
+
+  {% if perms.polls.add_poll %}
+    <p>
+        <a href="{% url 'create_poll' %}">CREATE NEW POLL</a>
+    </p>
+  {% endif %}
 </body>
 </html>
