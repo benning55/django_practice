@@ -9,7 +9,7 @@
 <body>
     <div class="container pt-5">
         <h1>{{ comment_head }}</h1>
-        <form method="post" action="{% url 'create_comment' %}">
+        <form method="post" action="{% url 'create_comment' poll.id %}">
         {% csrf_token %}
             {% if form.non_field_errors %}
           <p>

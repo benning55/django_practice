@@ -47,5 +47,9 @@ class Answer(models.Model):
 class Comment(models.Model):
     title = models.CharField(max_length=100)
     body = models.CharField(max_length=500)
-    email = models.EmailField()
+    email = models.EmailField(blank=True)
     tel = models.CharField(max_length=10)
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.title

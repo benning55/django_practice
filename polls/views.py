@@ -4,7 +4,7 @@ from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
-from polls.forms import PollForm, CommentForm
+from polls.forms import PollForm, CommentForm, ChangePasswordForm
 from polls.models import Poll, Question, Answer, Comment
 
 
@@ -111,22 +111,55 @@ def create(request):
     return render(request, 'polls/create.html', context=context)
 
 
-def comment(request):
+def comment(request, poll_id):
+    poll = Poll.objects.get(pk=poll_id)
+
     if request.method == 'POST':
         form = CommentForm(request.POST)
+
+        print(poll.title)
 
         if form.is_valid():
             comment = Comment.objects.create(
                 title=form.cleaned_data.get('title'),
                 body=form.cleaned_data.get('body'),
                 email=form.cleaned_data.get('email'),
-                tel=form.cleaned_data.get('tel')
+                tel=form.cleaned_data.get('tel'),
+                poll=poll
             )
     else:
         form = CommentForm()
 
     context = {
         "form": form,
-        "comment_head": "New Comment"
+        "comment_head": "New Comment",
+        "poll": poll
     }
     return render(request, template_name='polls/comment.html', context=context)
+
+
+@login_required
+def change_password(request):
+    if request.method == 'POST':
+        form = ChangePasswordForm(request.POST)
+
+        old_pass = request.POST.get('old_pass')
+        new_pass = request.POST.get('new_pass')
+        confirm_pass = request.POST.get('confirm_pass')
+        print(old_pass)
+        print(new_pass)
+        print(confirm_pass)
+
+        print(request.user)
+        print(request.user.password)
+
+
+    else:
+        form = ChangePasswordForm()
+
+    context = {
+        "form": form,
+        'reset_title': 'เปลี่ยนรหัสผ่าน'
+    }
+
+    return render(request, template_name='polls/change_password.html', context=context)

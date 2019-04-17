@@ -69,3 +69,30 @@ class CommentForm(forms.Form):
 
         if not tel and not email:
             raise forms.ValidationError('ต้องกรอก Email หรือ Mobile number')
+
+
+class ChangePasswordForm(forms.Form):
+    old_pass = forms.CharField(label="รหัสผ่านเก่า:", max_length=100, required=True)
+    new_pass = forms.CharField(label="รหัสผ่านใหม่:", max_length=100, required=True)
+    confirm_pass = forms.CharField(label="ยืนยันรหัสผ่าน:", max_length=100, required=True)
+
+    def clean_new_pass(self):
+        data = self.cleaned_data['new_pass']
+
+        if len(data) < 8:
+            self.add_error('new_pass', 'รหัสผ่านต้องมีมากกว่า 8 ตัวอักษร')
+        return data
+
+    def clean(self):
+        clean_data = super().clean()
+        new_pass = clean_data.get('new_pass')
+        print(new_pass)
+        confirm_pass = clean_data.get('confirm_pass')
+
+        if new_pass != confirm_pass:
+            print(new_pass)
+            print(confirm_pass)
+            raise forms.ValidationError('รหัสผ่านใหม่ กับ ยืนยันรหัสผ่านต้องเหมือนกัน')
+
+
+

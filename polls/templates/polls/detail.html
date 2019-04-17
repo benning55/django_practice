@@ -34,7 +34,7 @@
       {% endfor %}
       <div class="row pb-5">
         <div class="col-md-12">
-            <a href="{% url 'create_comment' %}">เพิ่ม Comment</a>
+            <a href="{% url 'create_comment' poll.id %}">เพิ่ม Comment</a>
           <button type="submit" class="btn btn-primary my-1" value="SAVE">Submit</button>
           <a class="btn btn-primary my-1 bg-danger border-danger" value="CANCEL" href="{% url 'index' %}" >Cancel</a><a href=""></a>
         </div>
