@@ -133,7 +133,8 @@ class ChoiceModelForm(forms.ModelForm):
 
     class Meta:
         model = Choice
-        fields = ['text', 'value', 'question']
+        fields = '__all__'
+        
 
 
 

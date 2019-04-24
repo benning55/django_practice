@@ -36,26 +36,24 @@
             <input type="button" @click="submit" value="SAVE DATA">
         </p>
         <p v-for="error in errorMsg">
-            [[error]]
+             [[ error ]]
         </p>
     </div>
     <script src="{% static 'polls/js/vue.js' %}"></script>
-    <script src="{% static 'polls/js/axios.js' %}"></script>
-    <script src="{% static 'polls/js/js.cookie.js' %}"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
     <script>
         var csrftoken = Cookies.get('csrftoken');
-
         var app = new Vue({
             el: '#app',
             delimiters: ["[[", "]]"],
             data: {
                 success: false,
-                errorMsg: '',
+                errorMsg: [],
                 choices: [],
             },
-            method: {
+            methods: {
                 addChoice(){
-                    alert("ssdsdf")
                     this.choices.push({
                         text: '',
                         value: 0
@@ -66,16 +64,17 @@
                     this.choices.splice(index, 1)
                 },
                 submit(){
-                    alert('tyr me');
-                    console.log(this.choices)
-                    axios
-                        .post('http://localhost:8000/polls/api/' + {{ question.id }} + '/add-choice/',
+                    console.log(this.choices);
+                    axios.post(
+                            'http://localhost:8000/polls/api/' + {{ question.id }} + '/add-choice/',
                             this.choices,
-                            {header: {'X-CSRFTOKEN': csrftoken}}
+                            {header: {'X-CSRFToken': csrftoken}}
                         )
                         .then(response => {
+                            console.log(response)
+
                             this.success = true
-                            this.errorMsg = ''
+                            this.errorMsg = response.data.message
                         })
                         .catch(error => {
                             console.log(error.response)
@@ -83,6 +82,7 @@
                         })
                 }
             }
+
         });
     </script>
 </body>

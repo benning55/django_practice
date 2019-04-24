@@ -4,8 +4,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.db.models import Count
 from django.forms import formset_factory
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from django.views.decorators.csrf import csrf_exempt
 
 from polls.forms import PollForm, CommentForm, ChangePasswordForm, PollModelForm, QuestionForm, ChoiceModelForm
 from polls.models import Poll, Question, Answer, Comment, Choice
@@ -185,6 +186,7 @@ def add_choice(request, question_id):
     return render(request, 'choices/add.html', context=context)
 
 
+@csrf_exempt
 def add_choice_api(request, question_id):
     if request.method == 'POST':
         choice_list = json.loads(request.body)
@@ -200,7 +202,14 @@ def add_choice_api(request, question_id):
             if form.is_valid():
                 form.save()
             else:
-                error_list.append(form.error.as_text())
+                error_list.append(form.errors.as_text())
+        if len(error_list) == 0:
+            return JsonResponse({'message': 'success', 'no_choice': 2}, status=200)
+        else:
+            print(error_list)
+            return JsonResponse({'message': error_list}, status=400)
+
+    return JsonResponse({'message': 'This API does not accept GET request.'}, status=405)
 
 
 def comment(request, poll_id):
